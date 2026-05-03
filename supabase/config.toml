@@ -1,1 +1,4 @@
 project_id = "zdsjzcbatmqhqpnjrdle"
+
+[functions.predict-churn]
+verify_jwt = false
