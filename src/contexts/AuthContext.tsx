@@ -23,18 +23,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(sess);
       setUser(sess?.user ?? null);
       if (sess?.user) {
-        setTimeout(async () => {
+        const fetchRole = async (userId: string) => {
           const { data } = await supabase
             .from("user_roles")
             .select("role")
-            .eq("user_id", sess.user.id)
+            .eq("user_id", userId)
             .eq("role", "admin")
             .maybeSingle();
+        
           setIsAdmin(!!data);
-        }, 0);
-      } else {
-        setIsAdmin(false);
-      }
+        }
+      } 
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {

@@ -17,11 +17,6 @@ export const Header = () => {
         <nav className="flex items-center gap-2">
           {user && (
             <>
-              <Link to="/">
-                <Button variant={loc.pathname === "/" ? "secondary" : "ghost"} size="sm">
-            Predict
-                </Button>
-              </Link>
               {isAdmin && (
                 <Link to="/dashboard">
                   <Button variant={loc.pathname === "/dashboard" ? "secondary" : "ghost"} size="sm">
