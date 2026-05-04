@@ -170,35 +170,37 @@ const Index = () => {
 
         {result && (
           <section className="space-y-6">
-            <div className="grid md:grid-cols-3 gap-4">
-              <Card className="card-elevated p-6">
-                <p className="text-sm text-muted-foreground">Churn Probability</p>
-                <p className="text-4xl font-bold mt-2">{churnPct}%</p>
-                <p className={`text-sm font-semibold mt-1 ${churnTier.color}`}>{churnTier.label} RISK</p>
-              </Card>
-              <Card className="card-elevated p-6">
-                <p className="text-sm text-muted-foreground">Expected Lifetime Value</p>
-                <p className="text-4xl font-bold mt-2">${Number(result.lifetime_value).toLocaleString()}</p>
-              </Card>
-              <Card className="card-elevated p-6">
-                <p className="text-sm text-muted-foreground">Recommendation</p>
-                <p className="text-base mt-2 flex items-start gap-2">
-                  <AlertTriangle className={`w-5 h-5 mt-0.5 ${churnTier.color} shrink-0`} />
-                  {churnPct >= 50 ? "High risk — engage retention immediately" : "Healthy — continue standard onboarding"}
-                </p>
-              </Card>
-            </div>
+            <Card className="card-elevated p-6 text-center">
+              <p className="text-2xl md:text-3xl font-semibold">
+                Churn probability is{" "}
+                <span className={churnTier.color}>{Number(result.churn_probability).toFixed(2)}</span>{" "}
+                and Expected Life Time Value is{" "}
+                <span className="gradient-text">${Number(result.lifetime_value).toLocaleString()}</span>
+              </p>
+              <p className={`mt-2 text-sm font-semibold ${churnTier.color}`}>{churnTier.label} RISK</p>
+            </Card>
 
             <div className="grid md:grid-cols-3 gap-4">
-              {result.hazard_image && <Card className="card-elevated p-4"><img src={`data:image/png;base64,${result.hazard_image}`} alt="Cumulative Hazard" className="w-full rounded" /></Card>}
-              {result.gauge_image && <Card className="card-elevated p-4"><img src={`data:image/png;base64,${result.gauge_image}`} alt="Risk Gauge" className="w-full rounded" /></Card>}
-              {result.survival_image && <Card className="card-elevated p-4"><img src={`data:image/png;base64,${result.survival_image}`} alt="Survival Curve" className="w-full rounded" /></Card>}
+              {result.hazard_image && (
+                <Card className="card-elevated p-3">
+                  <img src={`data:image/png;base64,${result.hazard_image}`} alt="Cumulative Hazard Over Time" className="w-full rounded bg-white" />
+                </Card>
+              )}
+              {result.gauge_image && (
+                <Card className="card-elevated p-3">
+                  <img src={`data:image/png;base64,${result.gauge_image}`} alt="Churn Probability Gauge" className="w-full rounded bg-white" />
+                </Card>
+              )}
+              {result.survival_image && (
+                <Card className="card-elevated p-3">
+                  <img src={`data:image/png;base64,${result.survival_image}`} alt="Survival Probability Over Time" className="w-full rounded bg-white" />
+                </Card>
+              )}
             </div>
 
             {result.shap_image && (
-              <Card className="card-elevated p-4">
-                <h3 className="text-lg font-semibold mb-2">SHAP Explanation</h3>
-                <img src={`data:image/png;base64,${result.shap_image}`} alt="SHAP" className="w-full rounded bg-white" />
+              <Card className="card-elevated p-3">
+                <img src={`data:image/png;base64,${result.shap_image}`} alt="SHAP Explanation" className="w-full rounded bg-white" />
               </Card>
             )}
           </section>
