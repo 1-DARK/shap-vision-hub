@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Loader2, Sparkles, TrendingUp, AlertTriangle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 type FormState = {
   gender: string;
@@ -99,7 +99,7 @@ const Index = () => {
         <Card className="card-elevated p-6 md:p-8">
           <form onSubmit={submit} className="space-y-8">
             <div>
-              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2"><Sparkles className="w-5 h-5 text-primary" />Service flags</h2>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">Service flags</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {checkboxes.map(([k, label]) => (
                   <label key={k} className="flex items-center gap-2 p-3 rounded-lg bg-secondary/50 hover:bg-secondary transition cursor-pointer">

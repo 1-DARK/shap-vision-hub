@@ -1,7 +1,7 @@
 import io
 import base64
 from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
+from flask_cors import CORS # type: ignore
 import numpy as np
 import pandas as pd
 import pickle
@@ -11,14 +11,13 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Wedge, Rectangle
 import shap  # type: ignore
-shap.initjs()
 
 app = Flask(__name__)
 CORS(app)  # allow calls from the Lovable edge function
 
 # --- Load models ---
-model = pickle.load(open('./models/model_rfc.pkl', 'rb'))
-explainer = joblib.load(filename="./models/explainer_rfc.bz2")
+model = pickle.load(open('./models/model.pkl', 'rb'))
+explainer = joblib.load(filename="./models/explainer.bz2")
 
 # Optional survival model (for cumulative hazard + survival curve)
 try:
@@ -228,4 +227,6 @@ def predict_json():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5001)
+
+# python3 app.py
