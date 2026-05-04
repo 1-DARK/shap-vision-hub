@@ -30,45 +30,18 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "PREDICTION_API_URL not configured" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // Build form data matching the Flask app's expected fields
-    const form = new URLSearchParams();
-    if (inputs.gender) form.set("gender", String(inputs.gender));
-    if (inputs.SeniorCitizen) form.set("SeniorCitizen", "on");
-    if (inputs.Partner) form.set("Partner", "on");
-    if (inputs.Dependents) form.set("Dependents", "on");
-    if (inputs.PaperlessBilling) form.set("PaperlessBilling", "on");
-    if (inputs.PhoneService) form.set("PhoneService", "on");
-    if (inputs.MultipleLines) form.set("MultipleLines", "on");
-    if (inputs.OnlineSecurity) form.set("OnlineSecurity", "on");
-    if (inputs.OnlineBackup) form.set("OnlineBackup", "on");
-    if (inputs.DeviceProtection) form.set("DeviceProtection", "on");
-    if (inputs.TechSupport) form.set("TechSupport", "on");
-    if (inputs.StreamingTV) form.set("StreamingTV", "on");
-    if (inputs.StreamingMovies) form.set("StreamingMovies", "on");
-    form.set("MonthlyCharges", String(inputs.MonthlyCharges ?? 0));
-    form.set("Tenure", String(inputs.Tenure ?? 0));
-    form.set("InternetService", String(inputs.InternetService ?? "0"));
-    form.set("Contract", String(inputs.Contract ?? "0"));
-    form.set("PaymentMethod", String(inputs.PaymentMethod ?? "0"));
-
     let result: any;
     try {
-      const response = await fetch(`${apiUrl.replace(/\/$/, "")}/predict`, {
+      const response = await fetch(`${apiUrl.replace(/\/$/, "")}/predict_json`, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json" },
-        body: form.toString(),
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify(inputs),
       });
       if (!response.ok) {
         const text = await response.text();
         throw new Error(`Model API returned ${response.status}: ${text.slice(0, 200)}`);
       }
-      const ct = response.headers.get("content-type") || "";
-      if (ct.includes("application/json")) {
-        result = await response.json();
-      } else {
-        // Flask app returns rendered HTML; cannot parse — instruct user to add a JSON endpoint.
-        throw new Error("Model API must return JSON. Add a JSON endpoint that returns { churn_probability, lifetime_value, shap_image, gauge_image, hazard_image, survival_image }.");
-      }
+      result = await response.json();
     } catch (e) {
       return new Response(JSON.stringify({ error: e instanceof Error ? e.message : String(e) }), { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
