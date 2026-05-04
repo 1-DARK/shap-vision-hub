@@ -8,7 +8,7 @@ import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Wedge, Rectangle
-import shap
+import shap #type: ignore
 shap.initjs()
 
 app = Flask(__name__)

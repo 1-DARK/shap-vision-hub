@@ -109,7 +109,22 @@ const Auth = () => {
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div><Label>Full name</Label><Input value={fullName} onChange={(e) => setFullName(e.target.value)} required /></div>
                 <div><Label>Email</Label><Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required /></div>
-                <div><Label>Password</Label><Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} /></div>
+                <div className="relative">
+  <Label>Password</Label>
+  <Input
+    type={showPassword ? "text" : "password"}
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword((prev) => !prev)}
+    className="absolute right-3 top-9 text-sm text-muted-foreground"
+  >
+    {showPassword ? (     <EyeOff className="w-4 h-4" />) : (     <Eye className="w-4 h-4" />)}
+  </button>
+</div>
                 <Button type="submit" disabled={busy} className="w-full">{busy && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}Create account</Button>
               </form>
             </TabsContent>

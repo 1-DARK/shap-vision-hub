@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, LogOut, LayoutDashboard, Activity } from "lucide-react";
+import {  LogOut, LayoutDashboard, Activity } from "lucide-react";
 
 export const Header = () => {
   const { user, isAdmin, signOut } = useAuth();
@@ -11,7 +11,6 @@ export const Header = () => {
     <header className="glass sticky top-0 z-50 border-b border-border">
       <div className="container flex items-center justify-between h-16">
         <Link to="/" className="flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-primary" />
           <span className="text-xl font-bold gradient-text">ChurnIQ</span>
         </Link>
 
@@ -20,7 +19,7 @@ export const Header = () => {
             <>
               <Link to="/">
                 <Button variant={loc.pathname === "/" ? "secondary" : "ghost"} size="sm">
-                  <Activity className="w-4 h-4 mr-2" />Predict
+            Predict
                 </Button>
               </Link>
               {isAdmin && (

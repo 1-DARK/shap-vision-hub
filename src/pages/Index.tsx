@@ -163,7 +163,7 @@ const Index = () => {
             </div>
 
             <Button type="submit" disabled={busy} size="lg" className="w-full md:w-auto">
-              {busy ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Predicting…</> : <><TrendingUp className="w-4 h-4 mr-2" />Run Prediction</>}
+              {busy ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Predicting…</> : <>Run Prediction</>}
             </Button>
           </form>
         </Card>
