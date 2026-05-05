@@ -17,18 +17,11 @@ export const Header = () => {
         <nav className="flex items-center gap-2">
           {user && (
             <>
-              <Link to="/">
-                <Button variant={loc.pathname === "/" ? "secondary" : "ghost"} size="sm">
-            Predict
-                </Button>
-              </Link>
-              {isAdmin && (
-                <Link to="/dashboard">
-                  <Button variant={loc.pathname === "/dashboard" ? "secondary" : "ghost"} size="sm">
+             <Link to="/dash">
+                  <Button variant={loc.pathname === "/dash" ? "secondary" : "ghost"} size="sm">
                     <LayoutDashboard className="w-4 h-4 mr-2" />Dashboard
                   </Button>
                 </Link>
-              )}
               <Button variant="ghost" size="sm" onClick={signOut}>
                 <LogOut className="w-4 h-4 mr-2" />Sign out
               </Button>
