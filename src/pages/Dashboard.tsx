@@ -8,6 +8,8 @@ import shap1 from "@/assets/shap1.png";
 import survival from "@/assets/survival.png";
 import tenure from "@/assets/tenure-churn.png"
 import { Header } from "@/components/Header";
+import { useAuth } from "@/contexts/AuthContext";
+import { Navigate } from "react-router-dom";
 
 type Item = { src: string; title: string; desc: string };
 
@@ -24,6 +26,9 @@ const items: Item[] = [
 ];
 
 const ModelAnalytics = () => {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) return <Navigate to="/auth" replace />;
   return (
     <div className="min-h-screen"> 
 <Header/>
