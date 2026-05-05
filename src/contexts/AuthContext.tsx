@@ -22,32 +22,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, sess) => {
       setSession(sess);
       setUser(sess?.user ?? null);
-      if (sess?.user) {
-        const fetchRole = async (userId: string) => {
-          const { data } = await supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", userId)
-            .eq("role", "admin")
-            .maybeSingle();
-        
-          setIsAdmin(!!data);
-        }
-      } 
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
-      if (session?.user) {
-        supabase.from("user_roles").select("role").eq("user_id", session.user.id).eq("role", "admin").maybeSingle()
-          .then(({ data }) => setIsAdmin(!!data));
-      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Separate effect for role check — avoids races with the auth listener
+  useEffect(() => {
+    if (!user) { setIsAdmin(false); return; }
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      if (cancelled) return;
+      if (error) console.error("Role check error:", error);
+      console.log("Admin role check:", { userId: user.id, hasAdmin: !!data });
+      setIsAdmin(!!data);
+    })();
+    return () => { cancelled = true; };
+  }, [user?.id]);
 
   const signOut = async () => { await supabase.auth.signOut(); };
 

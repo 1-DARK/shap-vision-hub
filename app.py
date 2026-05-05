@@ -17,7 +17,6 @@ CORS(app)  # allow calls from the Lovable edge function
 
 # --- Load models ---
 model = pickle.load(open('./models/model.pkl', 'rb'))
-ENCODED_COLUMNS = model.feature_names_in_.tolist()
 explainer = joblib.load(filename="./models/explainer.bz2")
 
 # Optional survival model (for cumulative hazard + survival curve)
@@ -25,7 +24,6 @@ try:
     survival_model = pickle.load(open('./models/survivemodel.pkl', 'rb'))
 except Exception:
     survival_model = None
-
 
 
 COLUMNS = [
@@ -146,19 +144,10 @@ def _create_gauge(probability):
 
 def _create_shap(features):
     shap_values = explainer.shap_values(np.array([features]))
-
-    # Shape is (1, 23, 2) — take sample 0, all features, class 1 (churn)
-    sv = np.array(shap_values)[0, :, 1]  # shape → (23,)
-
-    if isinstance(explainer.expected_value, (list, np.ndarray)):
-        ev = float(explainer.expected_value[1])
-    else:
-        ev = float(explainer.expected_value)
-
-    # sv and COLUMNS are both 23 now ✓
+    sv = shap_values[1] if isinstance(shap_values, list) else shap_values
+    ev = explainer.expected_value[1] if isinstance(explainer.expected_value, (list, np.ndarray)) else explainer.expected_value
     shap.force_plot(ev, sv, COLUMNS, matplotlib=True, show=False)
     return _fig_to_b64()
-
 
 
 def _survival_curves(tenure):

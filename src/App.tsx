@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index.tsx";
 import Auth from "./pages/Auth.tsx";
-import AA from "./pages/AA.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -23,7 +22,6 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/aa" element={<AA />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
